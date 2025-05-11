@@ -16,6 +16,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    - name: Setup Google Cloud authentication
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
+
     - name: Configure Google Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
       with:
