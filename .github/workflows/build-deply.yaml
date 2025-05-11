@@ -1,0 +1,42 @@
+name: Build and Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+        export_default_credentials: true
+
+    - name: Build Docker image
+      run: |
+        docker build -t $IMAGE .
+
+    - name: Push image to Artifact Registry
+      run: |
+        docker tag $IMAGE $IMAGE_URI
+        docker push $IMAGE_URI
+
+    - name: Deploy to Cloud Run
+      run: |
+        gcloud run deploy my-api \
+          --image=$IMAGE_URI \
+          --region=us-central1 \
+          --platform=managed \
+          --allow-unauthenticated \
+          --set-env-vars=GEOAPIFY_BASE_URL=${{ vars.GEOAPIFY_BASE_URL }}
+      env:
+        IMAGE: go-weather
+        IMAGE_URI: us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/go-weather-iar/goweather:latest
