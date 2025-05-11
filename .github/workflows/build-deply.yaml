@@ -5,6 +5,12 @@ on:
     branches:
       - main
 
+env:
+  GCP_REGION: us-east1
+  GCP_REPO_NAME: go-weather-iar
+  IMAGE_NAME: go-weather
+  SERVICE_NAME: go-weather
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -16,32 +22,39 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
     - name: Setup Google Cloud authentication
       uses: google-github-actions/auth@v2
       with:
         credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
 
-    - name: Configure Google Cloud SDK
-      uses: google-github-actions/setup-gcloud@v1
-      with:
-        project_id: ${{ secrets.GCP_PROJECT_ID }}
-        service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-        export_default_credentials: true
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
+
+    - name: Configure Docker for Artifact Registry
+      run: gcloud auth configure-docker ${{env.GCP_REGION}}-docker.pkg.dev
+
+    - name: Configure Docker for Artifact Registry
+      run: gcloud auth configure-docker ${{env.GCP_REGION}}-docker.pkg.dev
 
     - name: Build Docker image
       run: |
-        docker buildx build -t $IMAGE --platform linux/amd64 .
+        docker build -t ${{env.GCP_REGION}}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_REPO_NAME }}/${{ env.IMAGE_NAME }}:$GITHUB_SHA .
 
-    - name: Push image to Artifact Registry
+    - name: Push Docker image
       run: |
-        docker tag $IMAGE $IMAGE_URI
-        docker push $IMAGE_URI
+        docker push ${{ env.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_REPO_NAME }}/${{ env.IMAGE_NAME }}:$GITHUB_SHA
+
 
     - name: Deploy to Cloud Run
       run: |
-        gcloud run deploy my-api \
-          --image=$IMAGE_URI \
-          --region=us-central1 \
+        gcloud run deploy ${{ env.SERVICE_NAME }} \
+          --image=${{ env.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_REPO_NAME }}/${{ env.IMAGE_NAME }}:$GITHUB_SHA \
+          --region=${{ env.GCP_REGION }} \
           --platform=managed \
-          --allow-unauthenticated \
+          --project=${{ secrets.GCP_PROJECT_ID }} \
+          --quiet \
+          --allow-unauthenticated
           --set-env-vars=GEOAPIFY_BASE_URL=${{ vars.GEOAPIFY_BASE_URL }}
