@@ -13,7 +13,7 @@ FROM alpine:latest
 
 RUN apk --no-cache add ca-certificates
 
-WORKDIR /root/
+WORKDIR /server
 
 COPY --from=builder /server/app .
 

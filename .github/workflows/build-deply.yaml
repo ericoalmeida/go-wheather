@@ -56,5 +56,5 @@ jobs:
           --platform=managed \
           --project=${{ secrets.GCP_PROJECT_ID }} \
           --quiet \
-          --allow-unauthenticated
+          --allow-unauthenticated \
           --set-env-vars=GEOAPIFY_BASE_URL=${{ vars.GEOAPIFY_BASE_URL }}
