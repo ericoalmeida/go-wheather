@@ -22,7 +22,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t $IMAGE .
+        docker build -t $IMAGE --platform linux/amd64 .
 
     - name: Push image to Artifact Registry
       run: |
