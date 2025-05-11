@@ -1,7 +1,7 @@
 package config
 
 import (
-	"fmt"
+	"log"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -11,16 +11,20 @@ type Config struct {
 	GeoapifyBaseUrl string
 }
 
-func LoadConfig() *Config {
-	_ = godotenv.Load()
+func LoadConfig() {
+	err := godotenv.Load()
 
-	geoapifyBaseUrl := os.Getenv("GEOAPIFY_BASE_URL")
+	if err != nil {
+		log.Println("Aviso: arquivo .env nao encontrado. Assumindo valores do ambiente.")
+	}
+}
 
-	if geoapifyBaseUrl == "" {
-		fmt.Print("Environment variabels not defined.")
+func GetEnv(key string) string {
+	envValue := os.Getenv(key)
+
+	if envValue == "" {
+		log.Fatal("Environment variabels not defined.")
 	}
 
-	return &Config{
-		GeoapifyBaseUrl: geoapifyBaseUrl,
-	}
+	return envValue
 }
