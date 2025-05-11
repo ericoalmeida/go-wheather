@@ -1,7 +1,7 @@
 package config
 
 import (
-	"log"
+	"fmt"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -17,7 +17,7 @@ func LoadConfig() *Config {
 	geoapifyBaseUrl := os.Getenv("GEOAPIFY_BASE_URL")
 
 	if geoapifyBaseUrl == "" {
-		log.Fatal("Environment variabels not defined.")
+		fmt.Print("Environment variabels not defined.")
 	}
 
 	return &Config{
