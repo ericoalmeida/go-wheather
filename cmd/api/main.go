@@ -19,7 +19,7 @@ func main() {
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	cep := r.URL.Query().Get("cep")
-	if !pkg.ValidateZipcode(cep) {
+	if !pkg.IsZipcodeValid(cep) {
 		http.Error(w, "Invalid zipcode", http.StatusUnprocessableEntity)
 		return
 	}
