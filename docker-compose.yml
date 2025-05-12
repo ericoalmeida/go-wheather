@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   go-weather:
     container_name: go_weather
