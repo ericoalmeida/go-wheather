@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/ericoalmeida/go-wheather/internal/config"
+	"github.com/ericoalmeida/go-wheather/pkg"
 )
 
 type WeatherResponse struct {
@@ -47,7 +48,7 @@ func GetCurrentWeather(lat, lon float64) (*CurrentWeather, error) {
 
 	tempC := weatherResponse.Current.Temp_c
 	tempF := weatherResponse.Current.Temp_f
-	tempK := 0.0
+	tempK := pkg.CelsiusToKelvinConverter(weatherResponse.Current.Temp_c)
 
 	return &CurrentWeather{
 		Temp_c: tempC,

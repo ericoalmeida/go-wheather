@@ -13,7 +13,7 @@ import (
 func main() {
 	config.LoadConfig()
 
-	http.HandleFunc("/", handler)
+	http.HandleFunc("/weather", handler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
