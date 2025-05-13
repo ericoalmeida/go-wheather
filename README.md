@@ -4,10 +4,10 @@ Esta é uma API escrita em Go que recebe um **CEP brasileiro** como parâmetro, 
 
 ## 🔗 Link de demonstração (Cloud Run)
 
-> ⚠️ **Ambiente temporário.** Esta API está publicada no Google Cloud Run para fins de avaliação e será removida após o dia **01/06/2025**.
+> ⚠️ **Ambiente temporário.** Esta API está publicada no Google Cloud Run para fins de avaliação.
 >
 > ✅ Acesse a API aqui:  
-> `[GoWeather](https://go-weather-779180261777.us-east1.run.app/weather?cep=88010-040)`
+> [GoWeather](https://go-weather-779180261777.us-east1.run.app/weather?cep=88010-040)
 
 ---
 
