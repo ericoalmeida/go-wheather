@@ -30,6 +30,7 @@ jobs:
         run: go test ./... -v
     
   deploy:
+    needs: test
     runs-on: ubuntu-latest
     env:
         IMAGE: go-weather
