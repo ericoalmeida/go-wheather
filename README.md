@@ -54,3 +54,11 @@ docker-compose up --build
 ```bash
 http://localhost:8080/weather?cep=78590-000
 ```
+
+## Testes
+
+1. Execute o comando abaixo para rodar os testes
+
+```bash
+go test ./... -v
+```
