@@ -2,12 +2,12 @@
 
 Esta é uma API escrita em Go que recebe um **CEP brasileiro** como parâmetro, utiliza o serviço da **Geoapify** para converter o CEP em latitude e longitude, e em seguida consulta a **WeatherAPI** para retornar a **temperatura atual** da localidade.
 
-## 🔗 Link de demonstração (Cloud Run)
+## 🔗 Link de demonstração (Google Cloud Run)
 
 > ⚠️ **Ambiente temporário.** Esta API está publicada no Google Cloud Run para fins de avaliação.
->
-> ✅ Acesse a API aqui:  
-> [GoWeather](https://go-weather-779180261777.us-east1.run.app/weather?cep=88010-040)
+
+✅ Acesse a API aqui:  
+- [https://go-weather-779180261777.us-east1.run.app/weather?cep=88010-040](https://go-weather-779180261777.us-east1.run.app/weather?cep=88010-040)
 
 ---
 
